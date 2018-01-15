@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Weather</title>
+  </head>
+  <body>
+        <div id='root'></div>
+    
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    
+        <script type="text/babel">
+        class Counter extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {weather: '', temperature: '', icon: ''};
+            }
+        
+
+            componentDidMount(){
+                fetch('https://api.openweathermap.org/data/2.5/weather?id=658226&APPID=eb5b26b65595e5e29630a49dcbe6502b&units=metric')
+                .then((response) => response.json())
+                .then((responseData) => {
+                    this.setState({
+                        weather: responseData.weather[0].main,
+                        temperature: responseData.main.temp,
+                        icon: "http://openweathermap.org/img/w/" + responseData.weather[0].icon + ".png"
+                    });
+                });
+            }
+
+            render() {
+                return (
+                    <div>
+                        <div> Weather: {this.state.weather}</div>
+                        <div> Temperature: {this.state.temperature}</div>
+                        <div> <img src={this.state.icon}/></div>
+                    </div>
+                );
+            }
+        }
+            ReactDOM.render(<div><Counter /></div>,  document.getElementById('root'));
+    </script>
+</body>
+</html>
