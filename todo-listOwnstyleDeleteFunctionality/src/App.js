@@ -2,6 +2,17 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import TodoTable from './TodoTable';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+import DatePicker from 'material-ui/DatePicker';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+  } from 'material-ui/Table';
 
 class App extends Component {
   constructor(props) {
@@ -16,7 +27,8 @@ class App extends Component {
   addTodo = (event) => {
     console.log("called addTodo");
     event.preventDefault();
-    const newToDo = {date:this.state.date, description: this.state.description};
+    const strDate = this.state.date.getDate() + "." + (this.state.date.getMonth()+1) + "." + this.state.date.getFullYear();
+    const newToDo = {date:strDate, description: this.state.description};
     this.setState({
       todos: [...this.state.todos, newToDo]
     });
@@ -30,6 +42,9 @@ class App extends Component {
     })
 
   }
+  dateChanged = (event,date) => {
+    this.setState({date:date});
+  }
 
 
   render() {
@@ -42,21 +57,31 @@ class App extends Component {
         </div>
 
         <div>
-          <form onSubmit={this.addTodo}>
-            Date: <input type="date" name="date" onChange={this.inputChanged} value={this.state.date}/>
-            Description: <input type="text" name="description" onChange={this.inputChanged} value={this.state.description}/>
-            <input type="submit" value="Add"/>
-          </form>
+          {/* <form onSubmit={this.addTodo}> */}
+            Date: <DatePicker name="date" hintText="Type the date" onChange={this.dateChanged} value={this.state.date}/>
+            Description: <TextField name="description" hintText="Type the description" onChange={this.inputChanged} value={this.state.description}/>
+            <RaisedButton primary={true} label = "Add" onClick={this.addTodo}/>
+          {/* </form> */}
         </div>
 
-        <div>
+        {/* <div>
         
         <TodoTable 
         removeItem={this.removeItem.bind(this)}
         todos={this.state.todos} />
         
-        </div>
-     
+        </div> */}
+        <Table selectable={false}>
+          <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+          <TableHeaderColumn>Date</TableHeaderColumn>
+          <TableHeaderColumn>Description</TableHeaderColumn>
+          </TableHeader>
+          <TableBody>
+          {this.state.todos.map((item, index) =>
+          <TableRow key={index}><TableRowColumn>{item.date}</TableRowColumn>
+          <TableRowColumn>{item.description}</TableRowColumn></TableRow>)}
+          </TableBody>
+          </Table>
        
       </div>
 

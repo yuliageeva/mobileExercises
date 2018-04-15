@@ -20,27 +20,9 @@ render(){
         }]
     return (
         <ReactTable data={this.props.todos}
-                    columns={columns} sortable={true}
+                    columns={columns} sortable={true} filterable={true}
                     defaultPageSize={10} />
-        // <div className ="App">
-        //  <table>
-        //     <tbody>
-        //         <tr>
-        //         <th>Date</th>
-        //         <th>Description</th>
-        //         <th>Action</th>
-        //         </tr>
-        //         {this.props.todos.map((item,index) => 
-        //             <tr key={index}>
-        //                 <td>{item.date}</td>
-        //                 <td>{item.description}</td>
-        //                 <td><button type ="button" onClick={(e)=> this.props.removeItem(item,index)}>Delete</button></td>
-        //             </tr>
-        //         )}
-
-        //    </tbody>
-        // </table>             
-        // </div>  
+  
     );  
 }
 }

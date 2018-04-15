@@ -14,7 +14,6 @@ class App extends Component {
   }
 
   addTodo = (event) => {
-    console.log("called addTodo");
     event.preventDefault();
     const newToDo = {date:this.state.date, description: this.state.description};
     this.setState({
@@ -33,7 +32,6 @@ class App extends Component {
 
 
   render() {
-    // const {todos} = this.state;
     
     return (
       <div className="App">
@@ -50,7 +48,7 @@ class App extends Component {
         </div>
 
         <div>
-        <table>
+        <table style ={{width:"100%"}}>
         <tbody>
         <TodoTable 
         removeItem={this.removeItem.bind(this)}

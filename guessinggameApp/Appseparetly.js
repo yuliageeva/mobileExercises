@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Image, AsyncStorage, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, Alert, TextInput, Image, AsyncStorage, Alert } from 'react-native';
 
 
 export default class App extends React.Component {
@@ -7,14 +7,14 @@ export default class App extends React.Component {
     super(props);
     this.state = {myNumber:'',
     message:'Guess a number between 1-100',
-    count:0, myKey:null,
+    count:0, 
+    highscore:0,
     guessNumber: ((min, max)=>{
-    return Math.floor(Math.random() * 10) + 1;}) (1,10)
+    return Math.floor(Math.random() * 100) + 1;}) (1,100)
   }
   this.correctGuess = this.correctGuess.bind(this);
   }
 
-  
 
  
   render() {
@@ -31,22 +31,30 @@ export default class App extends React.Component {
           keyboardType={'numeric'}
         />
         <Button onPress={this.buttonGuess} title="Make a guess" />
-        <Text> Highscore: {this.state.myKey} guesses </Text>
+        <Text> Highscore: {this.state.highscore} guesses </Text>
         </View> 
-      </View> 
+      
 
+        
+        {/* { !this.state.game && 
+            <Button onPress={this.guessAgain.bind(this)} title="Guess again" />
+        } */}
+          
+          
+        
+        </View> 
+        
+        
+  
     );
     
   }
-  componentDidMount (){
-    this.getKey();
-  }
+
   generateNumber = () => {
     this.state.guessNumber = ((min, max)=>{
-      return Math.floor(Math.random() * 10) + 1;}) (1,10)
+      return Math.floor(Math.random() * 100) + 1;}) (1,100)
     
     }
-   
    buttonGuess = () => {
       
       let message = null;
@@ -66,15 +74,16 @@ export default class App extends React.Component {
       }
 
       this.setState({message});
+      // this.setState({game: this.state.guessNumber != this.state.myNumber});
       this.state.count++;
       this.setState({myNumber:''});
    }
 
    correctGuess = () => {
-      this.state.count++;
+     this.state.count++;
+      //Alert.alert('You guessed the number in '+ this.state.count +' guesses');
       this.generateNumber();
       console.log(this.state.message);
-      
 
       Alert.alert(
         'You Win!',
@@ -84,38 +93,14 @@ export default class App extends React.Component {
         ],
         { cancelable: false }
       )
-      
-      this.getKey();
-      this.setState({count: 0});
-   }
-
- getKey=async() => {
-  try {
-    let highscore = this.state.count;
-    console.log("hiscore"+highscore);
-    
-    let value = await AsyncStorage.getItem('myKey');
-    console.log("val"+value);
-    if(value ==0){
-      AsyncStorage.setItem('myKey', JSON.stringify(highscore));
-      this.setState({myKey: Number(highscore)});
-      console.log("s0"+this.state.myKey);
-    }
-
-    if (value>highscore){
-      AsyncStorage.setItem('myKey', JSON.stringify(highscore));
-      this.setState({myKey: Number(highscore)});
-      console.log(this.state.myKey);
-    }
-
-   } catch (error) {
-     console.log("Error retrieving data" + error);
   }
- }
+
+    try{
+        await AsyncStorage.setItem(highscore, this.state.count);
+    } catch(error) {
+        ALert.alert('Error saving data');
+    }
 }
-
- 
-
 
 
 
