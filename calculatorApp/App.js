@@ -35,9 +35,7 @@ export default class App extends React.Component {
     );
     
   }
-  buttonPressed = () => {
-    Alert.alert('You typed '+ this.state.text);
-  }
+ 
    buttonSum = () => {
       const {myNumber, number} = this.state;
 
